@@ -1,0 +1,117 @@
+Thread poster at 2026-04-02 01:45
+  New thread: free-ai-models (9 parts)
+  Posting part 1/9 of 'free-ai-models'
+  FAIL (403): {"detail":"You are not allowed to create a Tweet with duplicate content.","type":"about:blank","title":"Forbidden","status":403}
+  Failed to post, will retry next run
+Thread poster at 2026-04-02 02:15
+  New thread: ai-market-2026 (2 parts)
+  Posting part 1/2 of 'ai-market-2026'
+    Posted to community 1489422448332197888: 2039587387781566862
+  Thread progress: 1/2
+Thread poster at 2026-04-02 02:45
+  Thread: young-fatherhood | Part 1/5
+  Posted part 1 to community 1750982865117204723: 2039594937847550093
+  Progress: 1/5
+Thread poster at 2026-04-02 03:15
+  Thread: ai-safety-framework | Part 1/6
+  Posted part 1 to community 2013441068562325602: 2039602487720567193
+  Progress: 1/6
+Thread poster at 2026-04-02 03:45
+  Thread: local-vs-cloud-ai | Part 1/5
+  Posted part 1 to community 1489422448332197888: 2039610037539103175
+  Progress: 1/5
+Thread poster at 2026-04-02 04:15
+  Thread: dev-tools-2026 | Part 1/6
+  Posted part 1 to community 1699807431709041070: 2039617586984317395
+  Progress: 1/6
+Thread poster at 2026-04-02 04:45
+  Thread: young-fatherhood | Part 1/5
+  DUPLICATE DETECTED — marking part complete, moving to next
+  Exiting to avoid infinite duplicate loop
+Thread poster at 2026-04-02 05:15
+  Thread: sudbury-job-market | Part 1/6
+  DUPLICATE DETECTED — marking part complete, moving to next
+  Exiting to avoid infinite duplicate loop
+Thread poster at 2026-04-02 05:45
+  Thread: dev-tools-2026 | Part 1/6
+  DUPLICATE DETECTED — marking part complete, moving to next
+  Exiting to avoid infinite duplicate loop
+Thread poster at 2026-04-02 06:15
+  Thread: dev-tools-2026 | Part 2/6
+  ERROR: No previous tweet to reply to, posting to timeline
+  Posted part 2 to timeline: 2039647788443541886
+  Progress: 2/6
+Thread poster at 2026-04-02 06:45
+  Thread: dev-tools-2026 | Part 3/6
+  Posted part 3 as reply to 2039647788443541886: 2039655337158930535
+  Progress: 3/6
+Thread poster at 2026-04-02 07:15
+  Thread: young-fatherhood | Part 1/5
+  DUPLICATE DETECTED — marking part complete, moving to next
+  Exiting to avoid infinite duplicate loop
+Thread poster at 2026-04-02 07:45
+  Thread: ai-safety-framework | Part 1/6
+  DUPLICATE DETECTED — marking part complete, moving to next
+  Exiting to avoid infinite duplicate loop
+Thread poster at 2026-04-02 08:15
+  Thread: free-api-guide | Part 1/6
+  FAIL (503): no healthy upstream
+  Failed to post, will retry next run
+Thread poster at 2026-04-02 08:45
+  Thread: ai-safety-framework | Part 2/6
+  ERROR: No previous tweet to reply to, posting to timeline
+  Posted part 2 to timeline: 2039685534486778155
+  Progress: 2/6
+Thread poster at 2026-04-02 09:15
+  Thread: sudbury-job-market | Part 1/6
+  FAIL (403): {"detail":"You are not allowed to create a Tweet with duplicate content.","type":"about:blank","title":"Forbidden","status":403}
+  Failed to post, will retry next run
+Thread poster at 2026-04-02 09:45
+  Thread: apple-ai-strategy | Part 1/6
+  FAIL (503): no healthy upstream
+  Failed to post, will retry next run
+Thread poster at 2026-04-02 10:15
+  Thread: apple-ai-strategy | Part 1/6
+  FAIL (403): {"detail":"You do not have permission to create this Tweet.","type":"about:blank","title":"Forbidden","status":403}
+  Failed to post, will retry next run
+Thread poster at 2026-04-02 10:45
+  Thread: apple-ai-strategy | Part 1/6
+  FAIL (403): {"detail":"You do not have permission to create this Tweet.","type":"about:blank","title":"Forbidden","status":403}
+  Failed to post, will retry next run
+Thread poster at 2026-04-02 11:15
+  Thread: free-api-guide | Part 1/6
+  Posted part 1 to community 1838763245567369450: 2039723286154596599
+  Progress: 1/6
+Thread poster at 2026-04-02 11:45
+  Thread: ai-safety-framework | Part 1/6
+  FAIL (403): {"detail":"You are not allowed to create a Tweet with duplicate content.","type":"about:blank","title":"Forbidden","status":403}
+  Failed to post, will retry next run
+Thread poster at 2026-04-02 12:15
+  Thread: ai-safety-framework | Part 1/6
+  Posted part 1 to community 1838763245567369450: 2039738382855635167
+  Progress: 1/6
+Thread poster at 2026-04-02 12:45
+  Posted full thread 'dev-tools-2026' (1048 chars) to community 1699807431709041070: 2039745933437522155
+Traceback (most recent call last):
+  File "/root/.openclaw/workspace/scripts/thread-posting.py", line 150, in <module>
+    state["completed_threads"].append({"topic": topic, "completed_at": now.isoformat()})
+KeyError: 'completed_threads'
+Thread poster at 2026-04-02 13:15
+  Thread 'gen-ai-free-tools' already posted, skipping
+Thread poster at 2026-04-02 13:45
+  Thread 'free-api-guide' already posted, skipping
+Thread poster at 2026-04-02 14:15
+  Thread 'grok-vs-gpt' already posted, skipping
+Thread poster at 2026-04-02 14:45
+  Thread 'local-vs-cloud-ai' already posted, skipping
+Thread poster at 2026-04-02 15:15
+  Posted thread 'apple-ai-strategy' (1021 chars) to 1750982865117204723: 2039783685113708962
+Thread poster at 2026-04-02 15:45
+  Thread 'ai-safety-framework' already posted, skipping
+Thread poster at 2026-04-02 16:15
+  Thread 'dev-tools-2026' already posted, skipping
+Thread poster at 2026-04-02 16:45
+  All threads completed! Resetting cycle.
+  Thread 'grok-vs-gpt' already posted, skipping
+Thread poster at 2026-04-02 17:15
+  Thread 'local-vs-cloud-ai' already posted, skipping

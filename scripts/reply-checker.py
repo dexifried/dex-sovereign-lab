@@ -945,7 +945,7 @@ def process_mentions(dry_run: bool) -> int:
         time.sleep(2)
 
     if '--dry-run' not in sys.argv:
-    save_replied(replied)
+        save_replied(replied)
     save_json(FRESHNESS_FILE, freshness_state)
     save_json(CONVERSATION_LOG_FILE, conversation_state)
     save_json(RATE_LIMIT_FILE, rate_limit_state)
