@@ -110,7 +110,8 @@ def get_tweet_context(tweet_id):
     if r2.status_code == 200:
         tweets = r2.json().get("data", [])
         users = {u['id']: u for u in r2.json().get("includes", {}).get("users", [])}
-        for t in tweets:
+        # Reverse so oldest first, newest last — [-1] = latest
+        for t in reversed(tweets):
             author = users.get(t.get("author_id", ""), {})
             thread.append({
                 "author": author.get("username", "?"),

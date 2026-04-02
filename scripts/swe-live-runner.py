@@ -1,3 +1,4 @@
+import os
 #!/usr/bin/env python3
 """
 SWE-Bench Live Runner — Full Pipeline (v2)
@@ -18,13 +19,11 @@ MODELS = {
 }
 
 def run(cmd, cwd=None, timeout=120, shell=False):
+    """Run a subprocess command"""
     if isinstance(cmd, str):
-        shell = True
-    import shlex
-        if isinstance(cmd, str):
-            result = subprocess.run(cmd, shell=True, executable='/bin/bash', capture_output=True, text=True, cwd=cwd, timeout=timeout)
-        else:
-            result = subprocess.run(cmd, shell=shell, capture_output=True, text=True, cwd=cwd, timeout=timeout)
+        result = subprocess.run(cmd, shell=True, executable="/bin/bash", capture_output=True, text=True, cwd=cwd, timeout=timeout)
+    else:
+        result = subprocess.run(cmd, shell=shell, capture_output=True, text=True, cwd=cwd, timeout=timeout)
     return result.stdout.strip(), result.stderr.strip(), result.returncode
 
 def ollama_generate(model, prompt, max_tokens=2000):
@@ -387,3 +386,4 @@ if __name__ == "__main__":
             run_issue(instance_id=sys.argv[1])
     else:
         print("Usage: swe-live-runner.py <index_or_instance_id>")
+# TODO: extract_patch should split hunks by file (review bot P2)

@@ -124,10 +124,16 @@ def log_activity(entry):
 def extract_new_content(current_text, previous_text):
     if not previous_text:
         return ""
+    # Compare: if current_text hasn't changed since last check, nothing new
+    if current_text.strip() == previous_text.strip():
+        return ""
     # Find the last ME message to anchor
     me_idx = current_text.rfind("\nME\n")
     if me_idx < 0:
-        return current_text[-300:]
+        # No anchor found — only return content that's actually new
+        if len(current_text) > len(previous_text):
+            return current_text[len(previous_text):][-300:]
+        return ""
 
     after_last_me = current_text[me_idx:]
     # Check if there's content after our last message
