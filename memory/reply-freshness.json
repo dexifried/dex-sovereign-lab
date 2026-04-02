@@ -1,0 +1,32 @@
+{
+  "days": {
+    "2026-04-02": {
+      "replies": [
+        {
+          "conversation_id": "1992285574175039990",
+          "created_at": "2026-04-02T19:01:28-04:00",
+          "mention_id": "1992624791522550229",
+          "normalized": "if you re saying cultural depictions back up whitewashing that s a stretch mine was just about how interpretations adapt locally like korean jesus art",
+          "opener": "re saying cultural depictions",
+          "reply": "If you're saying cultural depictions back up whitewashing, that's a stretch\u2014mine was just about how interpretations adapt locally, like Korean Jesus art.",
+          "token_set": [
+            "about",
+            "adapt",
+            "back",
+            "cultural",
+            "depictions",
+            "interpretations",
+            "locally",
+            "mine",
+            "re",
+            "s",
+            "saying",
+            "stretch",
+            "up",
+            "whitewashing"
+          ]
+        }
+      ]
+    }
+  }
+}

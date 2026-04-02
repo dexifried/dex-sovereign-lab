@@ -1,0 +1,230 @@
+{
+  "stats": {
+    "Resolved": 0,
+    "Failed": 9,
+    "Skipped": 16,
+    "Error": 0
+  },
+  "sovereign_score": 0.0,
+  "results": [
+    {
+      "instance_id": "joke2k__faker-2162",
+      "repo": "joke2k/faker",
+      "status": "Failed",
+      "elapsed": 9.2,
+      "suspect_files": [
+        "tests/providers/test_doi.py",
+        "faker/providers/doi/__init__.py",
+        "faker/providers/ssn/es_ES/__init__.py",
+        "faker/providers/__init__.py",
+        "faker/providers/lorem/es_AR/__init__.py"
+      ]
+    },
+    {
+      "instance_id": "pdm-project__pdm-2743",
+      "repo": "pdm-project/pdm",
+      "status": "Failed",
+      "elapsed": 1.8,
+      "suspect_files": [
+        "src/pdm/formats/poetry.py",
+        "src/pdm/project/project_file.py"
+      ]
+    },
+    {
+      "instance_id": "conan-io__conan-15564",
+      "repo": "conan-io/conan",
+      "status": "Failed",
+      "elapsed": 3.6,
+      "suspect_files": [
+        "test/integration/graph/core/graph_manager_test.py",
+        "conan/internal/model/requires.py",
+        "conan/internal/model/dependencies.py",
+        "conan/tools/apple/apple.py",
+        "test/integration/graph/test_require_same_pkg_versions.py"
+      ]
+    },
+    {
+      "instance_id": "BerriAI__litellm-10284",
+      "repo": "BerriAI/litellm",
+      "status": "Failed",
+      "elapsed": 50.7,
+      "suspect_files": [
+        "litellm/litellm_core_utils/streaming_chunk_builder_utils.py",
+        "litellm/litellm_core_utils/streaming_handler.py"
+      ]
+    },
+    {
+      "instance_id": "conan-io__conan-16559",
+      "repo": "conan-io/conan",
+      "status": "Failed",
+      "elapsed": 3.5,
+      "suspect_files": [
+        "conan/internal/model/dependencies.py",
+        "conan/internal/model/options.py",
+        "conan/tools/system/package_manager.py",
+        "test/integration/build_requires/build_requires_test.py",
+        "test/integration/toolchains/env/test_environment.py"
+      ]
+    },
+    {
+      "instance_id": "shapely__shapely-2074",
+      "repo": "shapely/shapely",
+      "status": "Skipped",
+      "elapsed": 0,
+      "notes": "no suspects"
+    },
+    {
+      "instance_id": "pypsa__pypsa-891",
+      "repo": "PyPSA/PyPSA",
+      "status": "Skipped",
+      "elapsed": 0,
+      "notes": "no suspects"
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-27845",
+      "repo": "matplotlib/matplotlib",
+      "status": "Skipped",
+      "elapsed": 0,
+      "notes": "no suspects"
+    },
+    {
+      "instance_id": "conan-io__conan-18153",
+      "repo": "conan-io/conan",
+      "status": "Failed",
+      "elapsed": 3.7,
+      "suspect_files": [
+        "test/functional/toolchains/cmake/cmakedeps/test_cmakedeps.py",
+        "conan/cli/cli.py",
+        "test/functional/toolchains/cmake/test_cmake_toolchain.py",
+        "conan/internal/cache/cache.py",
+        "test/functional/toolchains/microsoft/test_msbuilddeps.py"
+      ]
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-27850",
+      "repo": "matplotlib/matplotlib",
+      "status": "Skipped",
+      "elapsed": 0,
+      "notes": "no suspects"
+    },
+    {
+      "instance_id": "conan-io__conan-17708",
+      "repo": "conan-io/conan",
+      "status": "Failed",
+      "elapsed": 4.2,
+      "suspect_files": [
+        "conan/internal/api/config/config_installer.py",
+        "conan/test/utils/test_files.py",
+        "conan/internal/rest/remote_manager.py",
+        "conan/internal/api/uploader.py"
+      ]
+    },
+    {
+      "instance_id": "aiogram__aiogram-1674",
+      "repo": "aiogram/aiogram",
+      "status": "Skipped",
+      "elapsed": 0,
+      "notes": "no suspects"
+    },
+    {
+      "instance_id": "spesmilo__electrum-10059",
+      "repo": "spesmilo/electrum",
+      "status": "Skipped",
+      "elapsed": 0,
+      "notes": "no suspects"
+    },
+    {
+      "instance_id": "bridgecrewio__checkov-6922",
+      "repo": "bridgecrewio/checkov",
+      "status": "Failed",
+      "elapsed": 6.6,
+      "suspect_files": [
+        "checkov/main.py",
+        "checkov/docs_generator.py",
+        "cdk_integration_tests/test_checks_typescript.py"
+      ]
+    },
+    {
+      "instance_id": "conan-io__conan-15651",
+      "repo": "conan-io/conan",
+      "status": "Failed",
+      "elapsed": 3.9,
+      "suspect_files": [
+        "conan/api/subapi/workspace.py",
+        "conan/cli/commands/graph.py",
+        "test/integration/graph/test_dependencies_visit.py",
+        "conan/internal/graph/install_graph.py"
+      ]
+    },
+    {
+      "instance_id": "kedro-org__kedro-4406",
+      "repo": "kedro-org/kedro",
+      "status": "Skipped",
+      "elapsed": 0,
+      "notes": "no suspects"
+    },
+    {
+      "instance_id": "aws-cloudformation__cfn-lint-3714",
+      "repo": "aws-cloudformation/cfn-lint",
+      "status": "Skipped",
+      "elapsed": 0,
+      "notes": "no suspects"
+    },
+    {
+      "instance_id": "mikedh__trimesh-2133",
+      "repo": "mikedh/trimesh",
+      "status": "Skipped",
+      "elapsed": 0,
+      "notes": "no suspects"
+    },
+    {
+      "instance_id": "mikedh__trimesh-2126",
+      "repo": "mikedh/trimesh",
+      "status": "Skipped",
+      "elapsed": 0,
+      "notes": "no suspects"
+    },
+    {
+      "instance_id": "reata__sqllineage-581",
+      "repo": "reata/sqllineage",
+      "status": "Skipped",
+      "elapsed": 0,
+      "notes": "no suspects"
+    },
+    {
+      "instance_id": "pylint-dev__pylint-9599",
+      "repo": "pylint-dev/pylint",
+      "status": "Skipped",
+      "elapsed": 0,
+      "notes": "no suspects"
+    },
+    {
+      "instance_id": "pwr-solaar__solaar-2463",
+      "repo": "pwr-Solaar/Solaar",
+      "status": "Skipped",
+      "elapsed": 0,
+      "notes": "no suspects"
+    },
+    {
+      "instance_id": "pytorch__torchtune-2066",
+      "repo": "pytorch/torchtune",
+      "status": "Skipped",
+      "elapsed": 0,
+      "notes": "no suspects"
+    },
+    {
+      "instance_id": "python-telegram-bot__python-telegram-bot-4632",
+      "repo": "python-telegram-bot/python-telegram-bot",
+      "status": "Skipped",
+      "elapsed": 0,
+      "notes": "no suspects"
+    },
+    {
+      "instance_id": "urllib3__urllib3-3266",
+      "repo": "urllib3/urllib3",
+      "status": "Skipped",
+      "elapsed": 0,
+      "notes": "no suspects"
+    }
+  ]
+}
