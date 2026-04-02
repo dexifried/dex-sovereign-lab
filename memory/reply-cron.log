@@ -213,3 +213,73 @@ Reply check at 2026-04-02 17:15 EDT
   Mentions fetched: 79 | previously processed: 86 | dry_run=False
   @Gyr0_Zeppeli0: post failed (403: {"detail":"You are not allowed to reply to this Tweet as the Tweet author has restricted who can reply to this Tweet.","type":"about:blank","title":"Forbidden","status":403}); will retry next run.
   Done: 0 replies | 0 skipped | 86 processed total
+Reply check at 2026-04-02 17:30 EDT
+  Mentions fetched: 79 | previously processed: 86 | dry_run=False
+  @Gyr0_Zeppeli0: post failed (403: {"detail":"You are not allowed to reply to this Tweet as the Tweet author has restricted who can reply to this Tweet.","type":"about:blank","title":"Forbidden","status":403}); will retry next run.
+Traceback (most recent call last):
+  File "/root/.openclaw/workspace/scripts/reply-checker.py", line 973, in <module>
+    raise SystemExit(main())
+  File "/root/.openclaw/workspace/scripts/reply-checker.py", line 969, in main
+    return process_mentions(dry_run=args.dry_run or env_dry_run)
+  File "/root/.openclaw/workspace/scripts/reply-checker.py", line 947, in process_mentions
+    if '--dry-run' not in sys.argv:
+NameError: name 'sys' is not defined
+Reply check at 2026-04-02 17:45 EDT
+  Mentions fetched: 79 | previously processed: 86 | dry_run=False
+  @Gyr0_Zeppeli0: post failed (403: {"detail":"You are not allowed to reply to this Tweet as the Tweet author has restricted who can reply to this Tweet.","type":"about:blank","title":"Forbidden","status":403}); will retry next run.
+Traceback (most recent call last):
+  File "/root/.openclaw/workspace/scripts/reply-checker.py", line 973, in <module>
+    raise SystemExit(main())
+  File "/root/.openclaw/workspace/scripts/reply-checker.py", line 969, in main
+    return process_mentions(dry_run=args.dry_run or env_dry_run)
+  File "/root/.openclaw/workspace/scripts/reply-checker.py", line 947, in process_mentions
+    if '--dry-run' not in sys.argv:
+NameError: name 'sys' is not defined
+Reply check at 2026-04-02 18:00 EDT
+  Mentions fetched: 79 | previously processed: 86 | dry_run=False
+  @Gyr0_Zeppeli0: post failed (403: {"detail":"You are not allowed to reply to this Tweet as the Tweet author has restricted who can reply to this Tweet.","type":"about:blank","title":"Forbidden","status":403}); will retry next run.
+Traceback (most recent call last):
+  File "/root/.openclaw/workspace/scripts/reply-checker.py", line 973, in <module>
+    raise SystemExit(main())
+  File "/root/.openclaw/workspace/scripts/reply-checker.py", line 969, in main
+    return process_mentions(dry_run=args.dry_run or env_dry_run)
+  File "/root/.openclaw/workspace/scripts/reply-checker.py", line 947, in process_mentions
+    if '--dry-run' not in sys.argv:
+NameError: name 'sys' is not defined
+Reply check at 2026-04-02 18:15 EDT
+  Mentions fetched: 79 | previously processed: 86 | dry_run=False
+  @Gyr0_Zeppeli0: post failed (403: {"detail":"You are not allowed to reply to this Tweet as the Tweet author has restricted who can reply to this Tweet.","type":"about:blank","title":"Forbidden","status":403}); will retry next run.
+Traceback (most recent call last):
+  File "/root/.openclaw/workspace/scripts/reply-checker.py", line 973, in <module>
+    raise SystemExit(main())
+  File "/root/.openclaw/workspace/scripts/reply-checker.py", line 969, in main
+    return process_mentions(dry_run=args.dry_run or env_dry_run)
+  File "/root/.openclaw/workspace/scripts/reply-checker.py", line 947, in process_mentions
+    if '--dry-run' not in sys.argv:
+NameError: name 'sys' is not defined
+Reply check at 2026-04-02 18:30 EDT
+  Mentions fetched: 79 | previously processed: 86 | dry_run=False
+  @Gyr0_Zeppeli0: post failed (403: {"detail":"You are not allowed to reply to this Tweet as the Tweet author has restricted who can reply to this Tweet.","type":"about:blank","title":"Forbidden","status":403}); will retry next run.
+Traceback (most recent call last):
+  File "/root/.openclaw/workspace/scripts/reply-checker.py", line 973, in <module>
+    raise SystemExit(main())
+  File "/root/.openclaw/workspace/scripts/reply-checker.py", line 969, in main
+    return process_mentions(dry_run=args.dry_run or env_dry_run)
+  File "/root/.openclaw/workspace/scripts/reply-checker.py", line 947, in process_mentions
+    if '--dry-run' not in sys.argv:
+NameError: name 'sys' is not defined
+Reply check at 2026-04-02 18:45 EDT
+  Mentions fetched: 78 | previously processed: 86 | dry_run=False
+  @Gyr0_Zeppeli0: post failed (403: {"detail":"You are not allowed to reply to this Tweet as the Tweet author has restricted who can reply to this Tweet.","type":"about:blank","title":"Forbidden","status":403}); will retry next run.
+Traceback (most recent call last):
+  File "/root/.openclaw/workspace/scripts/reply-checker.py", line 973, in <module>
+    raise SystemExit(main())
+  File "/root/.openclaw/workspace/scripts/reply-checker.py", line 969, in main
+    return process_mentions(dry_run=args.dry_run or env_dry_run)
+  File "/root/.openclaw/workspace/scripts/reply-checker.py", line 947, in process_mentions
+    if '--dry-run' not in sys.argv:
+NameError: name 'sys' is not defined
+  File "/root/.openclaw/workspace/scripts/reply-checker.py", line 5
+    from __future__ import annotations
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: from __future__ imports must occur at the beginning of the file

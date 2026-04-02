@@ -216,3 +216,35 @@ Viral tweet run at 2026-04-02 17:00
 
 Real-time X data + we...
   Posted: 2039810107790283086
+Viral tweet run at 2026-04-02 17:30
+  All templates for community 1733132808745283911 used, picking oldest from log
+  Community: 1733132808745283911
+  Tweet: Just had Grok 4 write a full research paper outline with live citations from X.
+...
+  FAIL (403): {"detail":"You are not allowed to create a Tweet with duplicate content.","type":"about:blank","title":"Forbidden","status":403}
+  Community post failed, trying timeline...
+  Posted to timeline: 2039817657944289386
+Viral tweet run at 2026-04-02 18:00
+  Community: 1699807431709041070
+  Tweet: The developer tools landscape in 2026 is insane.
+
+- Cursor (free tier)
+- Copilot...
+  Posted: 2039825208211599627
+Viral tweet run at 2026-04-02 18:30
+  All templates for community 1699807431709041070 used, picking oldest from log
+  Community: 1699807431709041070
+  Tweet: The developer tools landscape in 2026 is insane.
+
+- Cursor (free tier)
+- Copilot...
+  FAIL (403): {"detail":"You are not allowed to create a Tweet with duplicate content.","type":"about:blank","title":"Forbidden","status":403}
+  Community post failed, trying timeline...
+  FAIL (403): {"detail":"You are not allowed to create a Tweet with duplicate content.","type":"about:blank","title":"Forbidden","status":403}
+Viral tweet run at 2026-04-02 19:00
+  All templates for community 1699807431709041070 used, picking oldest from log
+  Community: 1699807431709041070
+  Tweet: Shipping code with AI assistance is the new normal.
+
+But here's what nobody talk...
+  Posted: 2039840306363793717
