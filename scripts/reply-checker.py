@@ -944,6 +944,7 @@ def process_mentions(dry_run: bool) -> int:
         print(f"  @{username}: {reply_text[:90]}")
         time.sleep(2)
 
+    if '--dry-run' not in sys.argv:
     save_replied(replied)
     save_json(FRESHNESS_FILE, freshness_state)
     save_json(CONVERSATION_LOG_FILE, conversation_state)

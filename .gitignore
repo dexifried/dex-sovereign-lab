@@ -1,44 +1,19 @@
-
-# ==========================================
-# 🛡️ DEX SOVEREIGN LAB: OPSEC SAFEGUARD
-# ==========================================
-
-# 🧠 Neural Weights & Checkpoints (Heavy Metal)
-dex_router_model/
-dex_router_results/
-dex-neural-bake/
-*.safetensors
-*.bin
-*.pt
-*.zip
-
-# 🗄️ Episodic Memory & Local DNA
-dex_vault/
-dex_vault.json
-intent_dataset.csv
-intent_dataset.backup.csv
-
-# 🪵 Telemetry & System Logs
-*.log
-gatekeeper.log
-tg_bridge.log
-miner_log.txt
-
-# ⚙️ Infrastructure & Virtual Environments
-venv/
-__pycache__/
+memory/archive/
+memory/*.jsonl
+memory/replied-tweets.json
+memory/reply-conversations.json
+memory/reply-thread-log.json
+memory/thread-state.json
+memory/viral-log.jsonl
+memory/reply-cost-log.jsonl
+memory/skill-cache.json
+memory/context-snapshot-*.md
 .env
-__pycache__/
+.env.*
+!.env.example
+browser-profiles/
 *.pyc
-
-# 🤖 Aider (Local Surgeon) Artifacts
-.aider*
-.aider.chat.history.md
-.aider.input.history
-.aider.tags.cache.v4/
-
-# 📂 Temporary Workspaces & Staging
-workspace/
-staging/
-github_staging/
-
+__pycache__/
+aider/
+*.bak
+scripts/reply-checker-backup.py

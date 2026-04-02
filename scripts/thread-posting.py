@@ -130,15 +130,23 @@ viral_log = get_viral_log()
 completed = state.get("completed_threads", [])
 completed_topics = [t.get("topic") for t in completed]
 
-available_threads = [t for t in THREADS if t["topic"] not in completed_topics]
-if not available_threads:
-    print("  All threads completed! Resetting cycle.")
-    state["completed_threads"] = []
-    completed_topics = []
-    available_threads = THREADS
-
-thread = random.choice(available_threads)
-topic = thread.get("topic", "")
+# Check if we have an active thread in progress first
+active = state.get("active_thread", {})
+if active and active.get("topic") not in completed_topics:
+    # Resume the in-progress thread
+    thread = active
+    topic = thread.get("topic", "")
+    part_idx = state.get("next_part", 0)
+else:
+    # Pick a new random thread
+    available_threads = [t for t in THREADS if t["topic"] not in completed_topics]
+    if not available_threads:
+        print("  All threads completed! Resetting cycle.")
+        state["completed_threads"] = []
+        available_threads = THREADS
+    thread = random.choice(available_threads)
+    topic = thread.get("topic", "")
+    part_idx = 0
 
 if LONG_FORM:
     cleaned_parts = []
@@ -148,6 +156,8 @@ if LONG_FORM:
         cleaned = re.sub(r'^(\d+)/\s*', '', cleaned, count=1)
         cleaned_parts.append(cleaned)
     full_text = "\n\n".join(cleaned_parts)
+    # Also strip any trailing "1/" or "2/" at the end of parts
+    full_text = re.sub(r'\s+\d+/\s*$', '', full_text)
     
     if len(full_text) <= MAX_SINGLE_POST_CHARS:
         if full_text[:80] not in recent and full_text[:80] not in viral_log:
