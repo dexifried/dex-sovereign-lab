@@ -32,7 +32,7 @@ FRESHNESS_FILE = MEMORY_DIR / "reply-freshness.json"
 RATE_LIMIT_FILE = MEMORY_DIR / "reply-rate-limit.json"
 COST_LOG_FILE = MEMORY_DIR / "reply-cost-log.jsonl"
 
-MODEL_NAME = "grok-3-mini"
+MODEL_NAME = "grok-4.20-non-reasoning"
 MAX_REPLY_CHARS = 280
 MAX_THREAD_MESSAGES = 14
 MAX_REPLY_CHAIN_DEPTH = 8
