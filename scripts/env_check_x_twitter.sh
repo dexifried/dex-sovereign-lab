@@ -11,7 +11,7 @@ check_key() {
   # check process environment (POSIX sh doesn't support ${!VAR}, use eval)
   VAL=""
   eval "VAL=\"\$$KEY\""
-  if [ "\$VAL" != "" ]; then
+  if [ "$VAL" != "" ]; then
     PRESENT="yes (process)"
   fi
   # check .env file

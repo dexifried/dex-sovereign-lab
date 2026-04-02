@@ -81,7 +81,7 @@ def run_pre_patch_tests(repo_dir, fail_to_pass):
     results = {}
     run("pip install -e . --quiet 2>/dev/null", cwd=repo_dir, shell=True, timeout=120)
     for test in fail_to_pass:
-        stdout, stderr, code = run(f"pytest -xvs --tb=short {test} 2>&1 | tail -20", cwd=repo_dir, shell=True, timeout=120)
+        stdout, stderr, code = run(f"pytest -xvs --tb=short {test} 2>&1 | tail -20; exit ${PIPESTATUS[0]}", cwd=repo_dir, shell=True, timeout=120)
         results[test] = {"passed": code == 0, "output": stdout[-400:] or stderr[-400:]}
     return results
 
@@ -148,10 +148,10 @@ def run_post_patch_tests(repo_dir, fail_to_pass, pass_to_pass):
     """Verify patch fixed tests and no regressions"""
     results = {}
     for test in fail_to_pass:
-        stdout, stderr, code = run(f"pytest -xvs --tb=short {test} 2>&1 | tail -10", cwd=repo_dir, shell=True, timeout=120)
+        stdout, stderr, code = run(f"pytest -xvs --tb=short {test} 2>&1 | tail -10; exit ${PIPESTATUS[0]}", cwd=repo_dir, shell=True, timeout=120)
         results[test] = {"passed": code == 0, "output": stdout[-300:] or stderr[-300:]}
     for test in (pass_to_pass if isinstance(pass_to_pass, list) else [])[:5]:
-        stdout, stderr, code = run(f"pytest -xvs --tb=short {test} 2>&1 | tail -10", cwd=repo_dir, shell=True, timeout=120)
+        stdout, stderr, code = run(f"pytest -xvs --tb=short {test} 2>&1 | tail -10; exit ${PIPESTATUS[0]}", cwd=repo_dir, shell=True, timeout=120)
         results[f"regression:{test}"] = {"passed": code == 0, "output": stdout[-200:] or stderr[-200:]}
     return results
 

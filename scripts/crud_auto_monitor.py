@@ -14,7 +14,7 @@ import urllib.request
 import websocket
 
 CDP_URL = "ws://localhost:9870/devtools/page/"
-DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1469050762968699074/eLUJcfD18vo6kukOF7nRqg0PMUWy4psusL4dym5kDKdswq0C09frF7BOZ9wWMOxOuvgg"
+DISCORD_WEBHOOK = os.environ.get("DISCORD_WEBHOOK_URL", "")
 CRUD_CHAT_URL = "https://www.snapchat.com/web/fade20a9-400d-4514-afb3-614e1678e8af"
 ACTIVITY_LOG = "/root/.openclaw/workspace/memory/crud-activity-log.md"
 INTERVAL = 300  # 5 minutes
