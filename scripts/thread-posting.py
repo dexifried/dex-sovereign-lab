@@ -71,7 +71,7 @@ def get_recent_tweets():
             f'?max_results=20&tweet.fields=created_at'
         )
         if r.status_code == 200:
-            return {t['text'][:50] for t in r.json().get("data", [])}
+            return {t['text'][:80] for t in r.json().get("data", [])}
     except:
         pass
     return set()

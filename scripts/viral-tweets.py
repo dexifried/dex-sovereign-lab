@@ -42,7 +42,7 @@ def get_recent():
         f'?max_results=10&tweet.fields=created_at'
     )
     if r.status_code == 200:
-        return {t['text'][:50] for t in r.json().get("data", [])}
+        return {t['text'][:80] for t in r.json().get("data", [])}
     return set()
 
 
@@ -105,7 +105,7 @@ if not templates:
 
 # Filter out duplicates
 available = [t for t in templates
-             if t[:50] not in recent
+             if t[:80] not in recent
              and t[:80] not in posted_log]
 
 if not available:
