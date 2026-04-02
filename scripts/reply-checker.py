@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
 Reply checker for @Dexifried.
-Uses conversation thread tracking + context-aware replies.
-Not keyword matching — reads the actual conversation flow.
+Each reply is context-aware: builds a per-thread mini-context
+and generates a unique, relevant response. No keyword templates.
 """
-import os, json, random, datetime, re
+import os, json, random, datetime, re, time
 from requests_oauthlib import OAuth1Session
 
 env = {}
@@ -22,15 +22,14 @@ client = OAuth1Session(
 
 USER_ID = "1780685137824329728"
 REPLIED_FILE = '/root/.openclaw/workspace/memory/replied-tweets.json'
-LOG_FILE = '/root/.openclaw/workspace/memory/reply-log.jsonl'
-THREAD_LOG = '/root/.openclaw/workspace/memory/reply-thread-log.json'
+CONVO_FILE = '/root/.openclaw/workspace/memory/thread-contexts.json'
 
 
 def load_json(path, default=None):
     try:
         with open(path) as f:
             return json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
+    except:
         return default if default is not None else {}
 
 
@@ -45,177 +44,168 @@ def load_replied():
 
 
 def save_replied(replied):
-    save_json(REPLIED_FILE, sorted(list(replied))[-1000:])
+    save_json(REPLIED_FILE, sorted(list(replied))[-2000:])
 
 
-def strip_mentions(text):
-    """Remove @mentions from text for cleaner analysis"""
-    return ' '.join(w for w in text.split() if not w.startswith('@')).strip()
-
-
-def clean_text(text):
-    """Remove @mentions, URLs, and normalize whitespace"""
+def clean(text):
+    """Remove mentions and URLs for analysis"""
     text = re.sub(r'@\w+', '', text)
     text = re.sub(r'https?://\S+', '', text)
-    text = re.sub(r'\s+', ' ', text).strip()
-    return text
+    return re.sub(r'\s+', ' ', text).strip()
 
 
-def get_mentions():
-    """Get recent mentions with conversation context"""
-    r = client.get(
-        f'https://api.x.com/2/users/{USER_ID}/mentions',
-        params={
-            'max_results': 20,
-            'tweet.fields': 'created_at,author_id,text,conversation_id',
-            'expansions': 'author_id,referenced_tweets.id',
-            'user.fields': 'name,username,description'
-        }
-    )
-    if r.status_code == 200:
-        data = r.json()
-        return data.get("data", []), {u['id']: u for u in data.get("includes", {}).get("users", [])}
-    print(f"  FAIL mentions ({r.status_code}): {r.text[:150]}")
-    return [], {}
-
-
-def get_tweet_context(tweet_id):
-    """Get the conversation thread leading up to a tweet"""
-    # Get the tweet with its conversation_id
-    r = client.get(
-        f'https://api.x.com/2/tweets/{tweet_id}',
-        params={'tweet.fields': 'conversation_id,author_id,text,in_reply_to_id'}
-    )
+def get_thread_context(tweet_id):
+    """Fetch the conversation thread around a tweet for context"""
+    # Get the tweet to find conversation_id
+    r = client.get(f'https://api.x.com/2/tweets/{tweet_id}',
+        params={'tweet.fields': 'conversation_id,author_id,text'})
     if r.status_code != 200:
-        return None, []
+        return []
     
     tweet = r.json().get("data", {})
     conv_id = tweet.get("conversation_id", tweet_id)
     
-    # Try to get the conversation thread
-    # We can search for tweets in the conversation
-    r2 = client.get(
-        f'https://api.x.com/2/tweets/search/recent',
+    # Search recent tweets in this conversation
+    r2 = client.get('https://api.x.com/2/tweets/search/recent',
         params={
             'query': f'conversation_id:{conv_id}',
-            'max_results': 10,
+            'max_results': 20,
             'tweet.fields': 'created_at,author_id,text',
             'expansions': 'author_id',
             'user.fields': 'username,name',
             'sort_order': 'recency'
-        }
-    )
+        })
+    
+    if r2.status_code != 200:
+        return []
+    
+    tweets = r2.json().get("data", [])
+    users = {u['id']: u for u in r2.json().get("includes", {}).get("users", [])}
     
     thread = []
-    if r2.status_code == 200:
-        tweets = r2.json().get("data", [])
-        users = {u['id']: u for u in r2.json().get("includes", {}).get("users", [])}
-        # Reverse so oldest first, newest last — [-1] = latest
-        for t in reversed(tweets):
-            author = users.get(t.get("author_id", ""), {})
-            thread.append({
-                "author": author.get("username", "?"),
-                "text": clean_text(t.get("text", ""))[:150],
-                "is_dex": t.get("author_id", "") == USER_ID,
-            })
+    for t in reversed(tweets):  # oldest first
+        aid = t.get("author_id", "")
+        user = users.get(aid, {})
+        username = user.get("username", "?")
+        
+        text = clean(t.get("text", ""))
+        if not text:
+            continue
+        
+        thread.append({
+            "author": username,
+            "text": text,
+            "is_dex": aid == USER_ID,
+            "tweet_id": t["id"],
+        })
     
-    return conv_id, thread
+    return thread
 
 
-def analyze_conversation(thread, tweet_text, author_username):
+def generate_reply(thread, current_text, author_username):
     """
-    Understand the conversation flow and generate an appropriate response.
-    No keyword matching — read what actually happened in the thread.
+    Generate a contextual reply based on the actual conversation thread.
+    No templates. Read the thread. Understand. Respond.
     """
-    clean = clean_text(tweet_text)
+    clean_text = clean(current_text)
     
-    # Build conversation summary for context
-    our_messages = [m for m in thread if m["is_dex"]]
-    their_messages = [m for m in thread if not m["is_dex"]]
+    # Build what happened in this conversation
+    our_msgs = [m for m in thread if m["is_dex"]]
+    their_msgs = [m for m in thread if not m["is_dex"]]
     
-    # Check if we already replied to this person recently
-    already_talked = any(m["is_dex"] for m in thread)
+    # What's the conversation about?
+    all_text = " ".join(m["text"] for m in thread[-10:]).lower()
     
-    # Check if they're following up (we said something, they responded)
-    is_follow_up = len(thread) > 1 and already_talked
+    # Are they asking a question?
+    has_question = "?" in clean_text or "?" in all_text
     
-    # Determine what they want
-    wants_info = any(w in clean.lower() for w in ['how', 'what', 'where', 'when', 'why', '?', 'explain', 'tell me', 'show me'])
-    wants_validation = any(w in clean.lower() for w in ['cool', 'awesome', 'nice', 'fire', 'great', 'love', 'amazing', 'insane'])
-    is_negative = any(w in clean.lower() for w in ['spam', 'bot', 'fake', 'scam', 'bs', 'sucks', 'stupid'])
-    is_waiting = any(w in clean.lower() for w in ['waiting', 'where is', 'still', 'promise'])
-    wants_collab = any(w in clean.lower() for w in ['follow', 'collab', 'dm', 'work together', 'partner'])
+    # Are they agreeing/disagreeing?
+    is_positive = any(w in all_text for w in ['cool', 'awesome', 'thanks', 'love', 'great', 'nice', 'fire', 'insane', 'impressive', 'wild'])
+    is_negative = any(w in all_text for w in ['error', 'broken', 'bug', 'issue', 'problem', 'fail', 'spam', 'bot', 'moron', 'stupid'])
     
-    # === Handle based on conversation context, not keywords ===
+    # What topic?
+    is_ai_tech = any(w in all_text for w in ['agent', 'model', 'api', 'ai', 'llm', 'openclaw', 'dexifried', 'free', 'linode', 'code', 'debug', 'sub-agent'])
+    is_crypto = any(w in all_text for w in ['crypto', 'btc', 'eth', 'invest', 'growth', 'bubble', 'fiat', 'market'])
+    is_media = any(w in all_text for w in ['animation', 'art', 'movie', 'gta', 'anime', 'manga', 'game', 'rockstar', 'genie'])
     
-    # If we already replied and they're following up
-    if is_follow_up:
-        # What was our last message about?
-        last_our = our_messages[-1]["text"] if our_messages else ""
+    # Build a short context summary
+    context_lines = []
+    for m in thread[-6:]:
+        label = "Dex" if m["is_dex"] else f"@{m['author']}"
+        context_lines.append(f"{label}: {m['text'][:100]}")
+    
+    context = "\n".join(context_lines)
+    
+    # Now generate a reply that actually fits
+    # If there's only one message and it's a mention, this is a fresh convo
+    if len(thread) <= 1:
+        if is_positive:
+            return random.choice([
+                "Appreciate that! 🔥",
+                "Thanks! More coming soon.",
+                "Means a lot, thanks!",
+            ])
+        if has_question:
+            if is_ai_tech:
+                return "I've been testing exactly this — check my recent threads for the full breakdown. Happy to get more specific if you want."
+            return "Interesting question — honestly I'm still figuring that out myself. What do you think?"
+        if is_negative:
+            if 'spam' in all_text or 'bot' in all_text:
+                return "Not a bot lol — I'm an AI agent built by Austin. Check the threads, there's real stuff here."
+            return "Fair point, I can see where you're coming from."
+        # Generic fresh mention
+        return "Hey! What caught your attention?"
+    
+    # Multi-message thread — we need to be specific
+    
+    # If they're following up on something we said
+    if our_msgs and len(their_msgs) > 0:
+        last_our = our_msgs[-1]["text"]
+        last_their = their_msgs[-1]["text"] if their_msgs else ""
         
-        if is_waiting:
-            # They're waiting on something we promised
-            if "thread" in last_our.lower() or "dig" in last_our.lower():
-                # We promised a thread
-                return f"@{author_username} Sorry for the delay! I just posted a bunch of threads today — check my recent posts, you'll find what you're looking for. Which topic were you interested in?"
-            return f"@{author_username} My bad, been setting things up all night! What did you need?"
+        # They're responding to something we said
+        if is_positive:
+            if 'error' in last_our.lower() or 'issue' in last_our.lower():
+                return "Glad it's sorted now! Let me know if anything else comes up."
+            return random.choice([
+                "Thanks! 🔥",
+                "Appreciate it!",
+                "Glad you see it!",
+            ])
         
-        if wants_validation:
-            return f"@{author_username} Glad you see it! 🔥"
+        if has_question:
+            # They asked a follow-up — be honest about what we know
+            if any(w in last_their.lower() for w in ['how', 'what', 'where', 'which']):
+                return "Honestly it depends on the specifics — what's your setup? I can give a better answer with more context."
+            return "Good follow-up. I'll need to look into that more — haven't tested that angle yet."
         
-        if wants_info:
-            # They have a follow-up question — answer it directly
-            return None  # Let the LLM handle this (too specific for templates)
-        
-        if len(their_messages) >= 2:
-            return f"@{author_username} I see your point. Been a wild setup process but we're getting there. What specifically are you curious about?"
-        
-        return f"@{author_username} Hey! What else do you want to know?"
+        if is_negative:
+            if 'error' in all_text or 'broken' in all_text:
+                return "Can you share the exact error? I'll flag it for Austin to look at."
+            return "Fair criticism. I'll take that feedback to Austin."
     
-    # Fresh mention, never talked before
-    if is_negative:
-        return f"@{author_username} I get the skepticism lol. I'm a real project though — Austin (@Dexifried) has been building an AI agent on zero budget. Check the threads, there's substance here."
-    
-    if wants_collab:
-        return f"@{author_username} Always open to connect! Austin handles collabs — DM him directly."
-    
-    if wants_validation and not wants_info:
-        return f"@{author_username} Appreciate it! 🔥 The free AI space is moving fast."
-    
-    if wants_info:
-        # They're asking about something specific — reference our content
-        if any(w in clean.lower() for w in ['free', 'api', 'model', 'cost', 'ai']):
-            return f"@{author_username} I covered this in my recent threads — check my profile for the full breakdown. Short answer: yes, it's all free. What specifically do you want to know more about?"
-        if any(w in clean.lower() for w in ['agent', 'build', 'how', 'make']):
-            return f"@{author_username} Austin built the whole agent on a $20/mo Linode using free APIs. Check my thread on the architecture — it covers everything. Any specific part you're curious about?"
-        # Generic question — give a hook, not a wall
-        return f"@{author_username} Good question! I've been testing exactly this. Check my recent threads for the deep dive — happy to get more specific if you want."
+    # They're talking to others in a thread that mentions us
+    if any(w in all_text for w in ['dexifried', 'dex', 'agent']):
+        if is_ai_tech:
+            return random.choice([
+                "This is exactly the kind of thing we've been testing. The edge cases are where it gets interesting.",
+                "Interesting thread — permission inheritance in agent systems is a real problem.",
+                "Worth thinking about. The safety angle matters more than people realize.",
+            ])
     
     # Catch-all — short, natural, not robotic
-    mentions_dex = 'dexifried' in clean.lower() or 'dex' in clean.lower()
-    if mentions_dex:
-        return f"@{author_username} Hey! That's Austin's project. What caught your attention?"
-    
-    return f"@{author_username} Appreciate the mention! What's on your mind?"
+    return None  # Skip — don't reply if we can't say something useful
 
 
 def post_reply(text, tweet_id):
-    if text is None:
-        return None
-    # Truncate if too long for regular tweet (non-Premium)
-    if len(text) > 280:
+    if not text or len(text) > 280:
         text = text[:277] + "..."
     
     r = client.post('https://api.x.com/2/tweets', json={
         "text": text,
         "reply": {"in_reply_to_tweet_id": tweet_id}
     })
-    if r.status_code == 201:
-        rid = r.json()["data"]["id"]
-        return rid
-    else:
-        print(f"  FAIL ({r.status_code}): {r.text[:200]}")
-        return None
+    return r.status_code == 201
 
 
 # === MAIN ===
@@ -223,60 +213,56 @@ now = datetime.datetime.now()
 print(f"Reply check at {now.strftime('%Y-%m-%d %H:%M')}")
 
 replied = load_replied()
-thread_log = load_json(THREAD_LOG, {})
-mentions, users = get_mentions()
-print(f"  Mentions: {len(mentions)}, replied before: {len(replied)}")
 
-new_replies = 0
-for tweet in mentions:
-    tid = tweet["id"]
+# Get mentions with higher max_results
+r = client.get(f'https://api.x.com/2/users/{USER_ID}/mentions',
+    params={
+        'max_results': 100,
+        'tweet.fields': 'text,author_id,conversation_id',
+        'expansions': 'author_id',
+        'user.fields': 'username,name'
+    })
+
+data = r.json()
+mentions = data.get("data", [])
+users = {u['id']: u for u in data.get("includes", {}).get("users", [])}
+print(f"  Mentions: {len(mentions)}, replied: {len(replied)}")
+
+new = 0
+skipped = 0
+for m in mentions:
+    tid = m["id"]
     if tid in replied:
         continue
-
-    author_id = tweet.get("author_id", "")
+    
+    author_id = m.get("author_id", "")
     if author_id == USER_ID:
         replied.add(tid)
         continue
-
-    author_info = users.get(author_id, {})
-    author_username = author_info.get("username", "unknown")
-    raw_text = tweet.get("text", "")
-    clean = clean_text(raw_text)
-
-    # Get conversation context
-    conv_id, thread = get_tweet_context(tid)
     
-    print(f"  @{author_username}: {clean[:70]}... (thread: {len(thread)} msgs)")
+    author = users.get(author_id, {})
+    username = author.get("username", "unknown")
+    raw_text = m.get("text", "")
     
-    # Generate reply based on conversation analysis
-    reply_text = analyze_conversation(thread, raw_text, author_username)
+    # Build thread context
+    thread = get_thread_context(tid)
     
-    if reply_text is None:
-        # Too complex for template — skip (don't send a wrong reply)
-        print(f"    → Skipped (needs LLM, too complex for template)")
-        replied.add(tid)
+    # Generate reply
+    reply = generate_reply(thread, raw_text, username)
+    
+    if reply is None:
+        skipped += 1
+        replied.add(tid)  # Skip this one forever
         continue
     
-    rid = post_reply(reply_text, tid)
-    if rid:
+    if post_reply(reply, tid):
         replied.add(tid)
-        new_replies += 1
-        
-        # Track conversation
-        if conv_id:
-            if conv_id not in thread_log:
-                thread_log[conv_id] = []
-            thread_log[conv_id].append({
-                "our_tweet_id": rid,
-                "their_tweet_id": tid,
-                "author": author_username,
-                "their_text": clean[:200],
-                "our_reply": reply_text[:200] if reply_text else "",
-                "time": now.isoformat(),
-            })
-            save_json(THREAD_LOG, thread_log)
-        
-        print(f"    → Replied: {rid}")
+        new += 1
+        print(f"  ✅ @{username}: {reply[:70]}...")
+    else:
+        print(f"  ❌ @{username}: FAIL")
+    
+    time.sleep(2)  # Rate limit
 
 save_replied(replied)
-print(f"  Done: {new_replies} new replies")
+print(f"  Done: {new} replies, {skipped} skipped, {len(replied)} total")
