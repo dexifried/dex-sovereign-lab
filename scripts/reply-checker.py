@@ -1,3 +1,4 @@
+import sys
 #!/usr/bin/env python3
 """Reply checker for @Dexifried with stronger context, freshness, and rate-limit handling."""
 
