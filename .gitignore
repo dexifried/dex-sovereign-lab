@@ -1,0 +1,15 @@
+memory/archive/
+memory/*.jsonl
+memory/replied-tweets.json
+memory/reply-conversations.json
+memory/reply-thread-log.json
+memory/viral-log.jsonl
+memory/thread-state.json
+memory/skill-cache.json
+.env
+.env.*
+!.env.example
+browser-profiles/
+*.pyc
+__pycache__/
+aider/

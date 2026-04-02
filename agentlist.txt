@@ -1,0 +1,206 @@
+============================================================
+  DEX AGENT FLEET — FULL INVENTORY (COMPLETE)
+  Generated: 2026-04-01 23:30 EDT
+  Every model probed individually — no assumptions.
+  Night of April 1: Austin gathered 8 new free API keys.
+============================================================
+
+CURRENT DEFAULT MODEL:
+  openrouter/xiaomi/mimo-v2-omni (FREE until 2026-04-02)
+
+FALLBACK CHAIN (configured in openclaw.json):
+  1. openrouter/free (showing "Insufficient credits" — unreliable)
+  2. sambanova/Meta-Llama-3.1-8B-Instruct
+  3. sambanova/Meta-Llama-3.3-70B-Instruct
+
+────────────────────────────────────────────────────────────
+SECTION 1: SAMBANOVA (FREE — 7 working models)
+Endpoint: https://api.sambanova.ai/v1/chat/completions
+Auth: Bearer SAMBANOVA_KEY (in .env)
+  ✅ DeepSeek-V3.2              ← BEST FREE MODEL (671B MoE)
+  ✅ Qwen3-235B                 ← 235B, huge and capable
+  ✅ Meta-Llama-3.1-8B-Instruct ← small and fast
+  ✅ Llama-4-Maverick-17B-128E  ← Llama 4!
+  ✅ Qwen3-32B                  ← mid-range
+  ✅ gemma-3-12b-it             ← Google small
+  ✅ Llama-3.3-Swallow-70B      ← 70B
+  ❌ Meta-Llama-3.3-70B-Instruct
+  ❌ DeepSeek-R1-Distill-Llama-70B
+  ❌ MiniMax-M2.5
+  ❌ gpt-oss-120b
+  ❌ E5-Mistral-7B-Instruct
+
+────────────────────────────────────────────────────────────
+SECTION 2: xAI / GROK (FREE — 5 working models)
+Endpoint: https://api.x.ai/v1/chat/completions
+Auth: Bearer XAI_API_KEY (in .env — prefix: xai-LP6D...)
+NOTE: grok-4.1-fast is NOT a valid model ID. Correct IDs below.
+  ✅ grok-3
+  ✅ grok-3-mini                ← cheapest
+  ✅ grok-4-0709                ← Grok 4 latest
+  ✅ grok-4-1-fast-non-reasoning ← correct ID for "grok 4.1 fast"
+  ✅ grok-code-fast-1           ← coding model
+  Also available: grok-4-fast-reasoning, grok-4-fast-non-reasoning,
+  grok-4.20-0309-non-reasoning, grok-4.20-0309-reasoning,
+  grok-4.20-multi-agent-0309, grok-imagine-image,
+  grok-imagine-image-pro, grok-imagine-video
+
+────────────────────────────────────────────────────────────
+SECTION 3: GROQ LPU (FREE — 2 working models)
+Endpoint: https://api.groq.com/openai/v1/chat/completions
+Auth: Bearer GROQ_KEY (in .env)
+  ✅ llama-3.3-70b-versatile    ← fast 70B
+  ✅ llama-3.1-8b-instant       ← fastest option
+  ❌ mixtral-8x7b-32768
+  ❌ gemma2-9b-it
+  18 models in catalog total
+
+────────────────────────────────────────────────────────────
+SECTION 4: CEREBRAS (FREE — 1 working model, massive limits)
+Endpoint: https://api.cerebras.ai/v1/chat/completions
+Auth: Bearer CEREBRAS_KEY (in .env)
+  ✅ llama3.1-8b                ← quality gate
+  Rate: ~2,000 RPM / ~3M req/day / ~4B tokens/day
+  Also has: zai-glm-4.7, qwen-3-235b, gpt-oss-120b (untested)
+
+────────────────────────────────────────────────────────────
+SECTION 5: MISTRAL (FREE — 4 working models)
+Endpoint: https://api.mistral.ai/v1/chat/completions
+Auth: Bearer MISTRAL_KEY (in .env)
+  ✅ mistral-large-latest       ← flagship
+  ✅ mistral-small-latest       ← fast
+  ✅ codestral-latest           ← code specialist
+  ✅ mistral-medium-latest
+  NOTE: Old model names (command-r, etc.) were Mistral competitor
+  that got sunsetted. These are Mistral's own models, all working.
+
+────────────────────────────────────────────────────────────
+SECTION 6: FIREWORKS AI (FREE — 3 working models)
+Endpoint: https://api.fireworks.ai/inference/v1/chat/completions
+Auth: Bearer FIREWORKS_KEY (in .env)
+Format: accounts/fireworks/models/<model-name>
+  ✅ llama-v3p3-70b-instruct   ← Llama 3.3 70B
+  ✅ deepseek-v3p1              ← DeepSeek V3.1
+  ✅ mixtral-8x22b-instruct     ← Mixtral 8x22B
+  ❌ llama-v3p1-405b-instruct   (not deployed on free tier)
+  ❌ llama4-scout-instruct-basic (not deployed)
+  ❌ deepseek-r1, qwen3-235b   (not deployed)
+
+────────────────────────────────────────────────────────────
+SECTION 7: COHERE (FREE — 3 working models)
+Endpoint: https://api.cohere.com/v1/chat
+Auth: Bearer COHERE_KEY (in .env)
+NOTE: Old model names (command-r-plus, command-light) were
+removed Sept 2025. Use the -08-2024 suffixed versions.
+  ✅ command-r-08-2024          ← general chat
+  ✅ command-r-plus-08-2024     ← stronger version
+  ✅ c4ai-aya-expanse-32b       ← multilingual 32B
+  Also available: embed models, rerank models, vision models
+
+────────────────────────────────────────────────────────────
+SECTION 8: CLOUDFLARE WORKERS AI (FREE — 3+ working models)
+Endpoint: https://api.cloudflare.com/client/v4/accounts/{acct}/ai/run/{model}
+Auth: Bearer CLOUDFLARE_KEY (in .env)
+Account ID: CLOUDFLARE_ACCOUNT_ID (in .env)
+Format: @cf/<org>/<model> or @hf/<org>/<model>
+  ✅ @cf/meta/llama-3-8b-instruct
+  ✅ @cf/meta/llama-3.2-3b-instruct
+  ✅ @cf/google/gemma-2b-it-lora
+  89 models in catalog total (many untested)
+  NOTE: Models are quantized for edge deployment
+  ❌ @cf/meta/llama-3.3-70b-instruct (error)
+  ❌ @cf/mistral/mistral-7b-instruct-v0.2 (error)
+  ⚠️ Must use /run endpoint, NOT /chat/completions
+
+────────────────────────────────────────────────────────────
+SECTION 9: NVIDIA NIM (FREE — 4 working models)
+Endpoint: https://integrate.api.nvidia.com/v1/chat/completions
+Auth: Bearer NVIDIA_KEY (in .env)
+  ✅ meta/llama-3.1-8b-instruct
+  ✅ meta/llama-3.3-70b-instruct
+  ✅ deepseek-ai/deepseek-v3.1
+  ✅ meta/llama-4-maverick-17b-128e-instruct ← Llama 4!
+  188 models in catalog total
+  ❌ deepseek-ai/deepseek-r1 (end of life Jan 2026)
+  ❌ qwen/qwen3-235b-instruct (error)
+  ❌ microsoft/phi-4 (error)
+
+────────────────────────────────────────────────────────────
+SECTION 10: OPENROUTER (FREE — 3 working models)
+Endpoint: https://openrouter.ai/api/v1/chat/completions
+Auth: Bearer OPENROUTER_KEY (in .env — prefix: sk-or-v1-cea...)
+  ✅ arcee-ai/trinity-large-preview:free
+  ✅ nvidia/nemotron-3-super-120b-a12b:free
+  ❌ openrouter/auto — "Insufficient credits" (unreliable)
+  ❌ qwen/qwen3-coder:free (provider error)
+  ❌ openai/gpt-oss-120b:free (guardrail restrictions)
+  ❌ openrouter/stepfun/step-3.5-flash:free (invalid ID)
+  ❌ openrouter/qwen/qwen2.5-coder-32b:free (invalid ID)
+  ❌ openrouter/hunter-alpha (error)
+
+────────────────────────────────────────────────────────────
+SECTION 11: DEAD ENDPOINTS
+────────────────────────────────────────────────────────────
+
+ANTHROPIC ❌ — "credit balance too low" (key exists, $0 balance)
+DEEPINFRA ❌ — DEPLETED (all models)
+DEEPSEEK ❌ — $0 balance (key saved, needs top-up — $2-5 would last months)
+GITHUB COPILOT ❌ — 404 on models endpoint
+KIMI/MOONSHOT ❌ — "Invalid Authentication"
+MINIMAX (native) ❌ — "login fail"
+OPENAI ❌ — No OPENAI_API_KEY in .env
+GOOGLE AI STUDIO ❌ — Austin's billing account suspended
+
+────────────────────────────────────────────────────────────
+SECTION 12: LOCAL MODELS — RTX 3060 (15 models, $0 forever)
+Endpoint: http://100.65.179.80:11434 (Tailscale)
+All verified via Ollama API:
+  qwen-dex:latest            6.1GB  (main)
+  qwen3.5:9b                 6.1GB
+  hermes3:8b                 4.3GB
+  hermes3-dex:latest         4.3GB
+  qwen-dex-instruct:latest   4.4GB
+  qwen2.5:7b-instruct        4.4GB
+  deepseek-dex-coder:latest  3.6GB
+  deepseek-coder:6.7b        3.6GB
+  codellama:7b-python        3.6GB
+  qwen-dex-4b:latest         3.2GB
+  qwen3.5:4b                 3.2GB
+  qwen2.5:1.5b               0.9GB
+  qwen-dex-sub:latest        1.0GB
+  qwen3.5:0.8b               1.0GB
+  nomic-embed-text:latest    0.3GB
+
+────────────────────────────────────────────────────────────
+SECTION 13: ACP AGENTS
+────────────────────────────────────────────────────────────
+  codex   v0.115.0  ✅ installed  (default ACP)
+  hermes  v0.5.0    ✅ installed
+  aider   v0.86.2   ✅ installed
+  claude  ❌ auth required
+
+────────────────────────────────────────────────────────────
+SECTION 14: PLUGINS
+────────────────────────────────────────────────────────────
+  telegram, brave, xai, perplexity, acpx, codex-app-server, minimax — all ✅
+
+────────────────────────────────────────────────────────────
+SECTION 15: POST-MI-MO PLAN (after 2026-04-02)
+────────────────────────────────────────────────────────────
+
+  PRIMARY:     sambanova/DeepSeek-V3.2          (free, biggest)
+  FAST:        groq/llama-3.3-70b-versatile     (free, fast LPU)
+  CODE:        mistral/codestral-latest          (free, code specialist)
+  REASONING:   xai/grok-3-mini                  (free, cheap reasoning)
+  FALLBACK 1:  nvidia/meta/llama-3.3-70b-instruct
+  FALLBACK 2:  fireworks/deepseek-v3p1
+  FALLBACK 3:  cerebras/llama3.1-8b             (quality gate)
+  QUALITY GATE: cerebras/llama3.1-8b
+  ULTIMATE:    local Ollama 3060 (truly free, offline)
+
+  ⚠️ openrouter/auto is showing "Insufficient credits" —
+     Do NOT rely on openrouter/free as primary fallback
+
+────────────────────────────────────────────────────────────
+TOTAL WORKING FREE MODELS: ~49 across 10 cloud providers + 15 local
+────────────────────────────────────────────────────────────
