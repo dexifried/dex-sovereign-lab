@@ -20,7 +20,11 @@ MODELS = {
 def run(cmd, cwd=None, timeout=120, shell=False):
     if isinstance(cmd, str):
         shell = True
-    result = subprocess.run(cmd, shell=shell, capture_output=True, text=True, cwd=cwd, timeout=timeout)
+    import shlex
+        if isinstance(cmd, str):
+            result = subprocess.run(cmd, shell=True, executable='/bin/bash', capture_output=True, text=True, cwd=cwd, timeout=timeout)
+        else:
+            result = subprocess.run(cmd, shell=shell, capture_output=True, text=True, cwd=cwd, timeout=timeout)
     return result.stdout.strip(), result.stderr.strip(), result.returncode
 
 def ollama_generate(model, prompt, max_tokens=2000):
@@ -58,11 +62,11 @@ def setup_issue(instance_id, repo, commit, work_dir):
 def get_codebase_context(repo_dir, target_files=None, max_chars=8000):
     """Get relevant file contents"""
     if target_files is None:
-        stdout, _, _ = run(f"find {repo_dir} -maxdepth 3 -name '*.py' -not -path '*/.*' -not -path '*/__pycache__/*' | head -40", shell=True)
+        stdout, _, _ = run(f"find {repo_dir} -maxdepth 3 -name '*.py' -not -path '*/.*' -not -path '*/__pycache__/*' | head -40", shell="/bin/bash")
         py_files = [f for f in stdout.split("\n") if f]
         target_files = py_files[:15]
     
-    tree_out, _, _ = run(f"find {repo_dir} -maxdepth 3 -not -path '*/.*' -not -path '*/__pycache__/*' | head -80", shell=True)
+    tree_out, _, _ = run(f"find {repo_dir} -maxdepth 3 -not -path '*/.*' -not -path '*/__pycache__/*' | head -80", shell="/bin/bash")
     
     context = f"## Directory Structure\n```\n{tree_out}\n```\n\n## Files\n"
     for f in target_files:
@@ -79,9 +83,9 @@ def get_codebase_context(repo_dir, target_files=None, max_chars=8000):
 def run_pre_patch_tests(repo_dir, fail_to_pass):
     """Run FAIL_TO_PASS tests to verify they fail"""
     results = {}
-    run("pip install -e . --quiet 2>/dev/null", cwd=repo_dir, shell=True, timeout=120)
+    run("pip install -e . --quiet 2>/dev/null", cwd=repo_dir, shell="/bin/bash", timeout=120)
     for test in fail_to_pass:
-        stdout, stderr, code = run(f"pytest -xvs --tb=short {test} 2>&1 | tail -20; exit ${PIPESTATUS[0]}", cwd=repo_dir, shell=True, timeout=120)
+        stdout, stderr, code = run(f"pytest -xvs --tb=short {test} 2>&1 | tail -20; exit ${PIPESTATUS[0]}", cwd=repo_dir, shell="/bin/bash", timeout=120)
         results[test] = {"passed": code == 0, "output": stdout[-400:] or stderr[-400:]}
     return results
 
@@ -148,10 +152,10 @@ def run_post_patch_tests(repo_dir, fail_to_pass, pass_to_pass):
     """Verify patch fixed tests and no regressions"""
     results = {}
     for test in fail_to_pass:
-        stdout, stderr, code = run(f"pytest -xvs --tb=short {test} 2>&1 | tail -10; exit ${PIPESTATUS[0]}", cwd=repo_dir, shell=True, timeout=120)
+        stdout, stderr, code = run(f"pytest -xvs --tb=short {test} 2>&1 | tail -10; exit ${PIPESTATUS[0]}", cwd=repo_dir, shell="/bin/bash", timeout=120)
         results[test] = {"passed": code == 0, "output": stdout[-300:] or stderr[-300:]}
     for test in (pass_to_pass if isinstance(pass_to_pass, list) else [])[:5]:
-        stdout, stderr, code = run(f"pytest -xvs --tb=short {test} 2>&1 | tail -10; exit ${PIPESTATUS[0]}", cwd=repo_dir, shell=True, timeout=120)
+        stdout, stderr, code = run(f"pytest -xvs --tb=short {test} 2>&1 | tail -10; exit ${PIPESTATUS[0]}", cwd=repo_dir, shell="/bin/bash", timeout=120)
         results[f"regression:{test}"] = {"passed": code == 0, "output": stdout[-200:] or stderr[-200:]}
     return results
 

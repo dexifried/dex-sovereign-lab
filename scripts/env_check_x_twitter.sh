@@ -15,7 +15,7 @@ check_key() {
     PRESENT="yes (process)"
   fi
   # check .env file
-  if [ -f "$ENV_FILE" ] && grep -q "^$KEY=" "$ENV_FILE"; then
+  if [ -f "$ENV_FILE" ] && grep -q "^$KEY=[^[:space:]]" "$ENV_FILE"; then
     if [ "$PRESENT" = "yes (process)" ]; then
       PRESENT="yes (process + .env)"
     else

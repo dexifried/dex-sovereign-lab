@@ -106,7 +106,7 @@ def get_last_logged_message():
         # Find last "Context:" entry to know what we've seen
         lines = content.strip().split("\n")
         for line in reversed(lines):
-            if line.startswith("   - Context:") or line.startswith("   - Response:"):
+            if line.startswith("- New messages detected:") or line.startswith("- Action:"):
                 return line.strip()
         return ""
     except:
